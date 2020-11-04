@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLandMVCTest.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,6 +32,17 @@ namespace SQLandMVCTest.Controllers
         {
             ViewBag.Message = "Customer creation";
 
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCustomer(CustomerModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
