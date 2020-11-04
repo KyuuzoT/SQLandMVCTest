@@ -21,14 +21,14 @@ namespace DataLibrary.BusinessLogic
                 EmailAddress = emailAddress
             };
 
-            string sql = @"INSERT INTO dbo.Customer (CustomerID, FullName, PhoneNumber, EmailAddress) values (@CustomerID, @FullName, @PhoneNumber, @EmailAddress)";
+            string sql = @"INSERT INTO dbo.CustomersTable (CustomerID, FullName, PhoneNumber, EmailAddress) values (@CustomerID, @FullName, @PhoneNumber, @EmailAddress)";
 
             return SqlDataAccess.SaveData(sql, data);
         }
 
         public static List<DALCustomerModel> LoadCustomers()
         {
-            string sql = @"SELECT Id, CustomerID, FullName, PhoneNumber, EmailAddress from dbo.Customers";
+            string sql = @"SELECT Id, CustomerID, FullName, PhoneNumber, EmailAddress from dbo.CustomersTable";
 
             return SqlDataAccess.LoadData<DALCustomerModel>(sql);
         }

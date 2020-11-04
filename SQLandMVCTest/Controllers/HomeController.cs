@@ -35,16 +35,16 @@ namespace SQLandMVCTest.Controllers
             ViewBag.Message = "The List of Cutomers";
 
             var data = CustomerProcessor.LoadCustomers();
-            List<DALCustomerModel> customers = new List<DALCustomerModel>();
+            List<CustomerModel> customers = new List<CustomerModel>();
 
             foreach (var row in data)
             {
-                customers.Add(new DALCustomerModel
+                customers.Add(new CustomerModel
                 {
                     CustomerID = row.CustomerID,
-                    FullName = row.FullName,
+                    Name = row.FullName,
                     PhoneNumber = row.PhoneNumber,
-                    EmailAddress = row.EmailAddress
+                    Email = row.EmailAddress
                 });
             }
 
@@ -71,7 +71,7 @@ namespace SQLandMVCTest.Controllers
                         model.PhoneNumber, 
                         model.Email
                     );
-                return RedirectToAction("Index");
+                return RedirectToAction("ViewCustomers");
             }
             return View();
         }
