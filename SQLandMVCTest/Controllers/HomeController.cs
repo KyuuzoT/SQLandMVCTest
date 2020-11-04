@@ -1,9 +1,11 @@
-﻿using SQLandMVCTest.Models;
+﻿using DataLibrary.BusinessLogic;
+using SQLandMVCTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DataLibrary.Models;
 
 namespace SQLandMVCTest.Controllers
 {
@@ -28,6 +30,27 @@ namespace SQLandMVCTest.Controllers
             return View();
         }
 
+        public ActionResult ViewCustomers()
+        {
+            ViewBag.Message = "The List of Cutomers";
+
+            var data = CustomerProcessor.LoadCustomers();
+            List<DALCustomerModel> customers = new List<DALCustomerModel>();
+
+            foreach (var row in data)
+            {
+                customers.Add(new DALCustomerModel
+                {
+                    CustomerID = row.CustomerID,
+                    FullName = row.FullName,
+                    PhoneNumber = row.PhoneNumber,
+                    EmailAddress = row.EmailAddress
+                });
+            }
+
+            return View(customers);
+        }
+
         public ActionResult CreateCustomer()
         {
             ViewBag.Message = "Customer creation";
@@ -41,6 +64,13 @@ namespace SQLandMVCTest.Controllers
         {
             if(ModelState.IsValid)
             {
+                int recordsCreated = CustomerProcessor.CreateCustomer
+                    (
+                        model.CustomerID, 
+                        model.Name, 
+                        model.PhoneNumber, 
+                        model.Email
+                    );
                 return RedirectToAction("Index");
             }
             return View();
