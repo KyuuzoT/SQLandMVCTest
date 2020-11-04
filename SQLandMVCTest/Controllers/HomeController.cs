@@ -26,5 +26,12 @@ namespace SQLandMVCTest.Controllers
 
             return View();
         }
+
+        public ActionResult CreateCustomer()
+        {
+            ViewBag.Message = "Customer creation";
+
+            return View();
+        }
     }
 }
