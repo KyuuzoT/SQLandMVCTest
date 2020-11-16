@@ -55,9 +55,9 @@
                     foreach (SQLandMVCTest.Models.OrderModel o in ViewBag.Orders)
                     {
                         <input type="checkbox" name="selectedOrders" value="@o.OrderID"
-                               @(ViewBag.Orders.Contains(o) ? "checked = \"checked\"" : "") />@o.OrderID<br />
+                               @(ViewBag.Orders.Contains(o) ? "checked = \"unchecked\"" : "") /> @Html.Label("Order #")@o.OrderID<br />
+                        }
                     }
-                }
             </div>
         </div>
 
