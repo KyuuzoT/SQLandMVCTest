@@ -41,7 +41,7 @@ namespace SQLandMVCTest.Controllers
             {
                 customers.Add(new CustomerModel
                 {
-                    CustomerID = row.CustomerID,
+                    CustomerID = row.CustomerId,
                     Name = row.FullName,
                     PhoneNumber = row.PhoneNumber,
                     Email = row.EmailAddress

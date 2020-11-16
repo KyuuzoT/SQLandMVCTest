@@ -48,6 +48,7 @@
     <Compile Include="BusinessLogic\CustomerProcessor.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Models\DALCustomerModel.cs" />
+    <Compile Include="Models\DALOrdersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

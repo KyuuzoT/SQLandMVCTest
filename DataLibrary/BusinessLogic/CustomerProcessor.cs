@@ -15,20 +15,20 @@ namespace DataLibrary.BusinessLogic
         {
             DALCustomerModel data = new DALCustomerModel
             {
-                CustomerID = customerID,
+                CustomerId = customerID,
                 FullName = fullName,
                 PhoneNumber = phoneNumber,
                 EmailAddress = emailAddress
             };
 
-            string sql = @"INSERT INTO dbo.CustomersTable (CustomerID, FullName, PhoneNumber, EmailAddress) values (@CustomerID, @FullName, @PhoneNumber, @EmailAddress)";
+            string sql = @"INSERT INTO dbo.CustomersTable (CustomerId, FullName, PhoneNumber, EmailAddress) values (@CustomerId, @FullName, @PhoneNumber, @EmailAddress)";
 
             return SqlDataAccess.SaveData(sql, data);
         }
 
         public static List<DALCustomerModel> LoadCustomers()
         {
-            string sql = @"SELECT Id, CustomerID, FullName, PhoneNumber, EmailAddress from dbo.CustomersTable";
+            string sql = @"SELECT Id, CustomerId, FullName, PhoneNumber, EmailAddress from dbo.CustomersTable";
 
             return SqlDataAccess.LoadData<DALCustomerModel>(sql);
         }
