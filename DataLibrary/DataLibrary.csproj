@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\CustomerProcessor.cs" />
+    <Compile Include="BusinessLogic\OrderProcessor.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Models\DALCustomerModel.cs" />
     <Compile Include="Models\DALOrdersModel.cs" />
