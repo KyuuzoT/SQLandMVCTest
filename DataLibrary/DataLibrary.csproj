@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\CustomerProcessor.cs" />
+    <Compile Include="BusinessLogic\CustomersOrdersProcessor.cs" />
     <Compile Include="BusinessLogic\OrderProcessor.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Models\DALCustomerModel.cs" />
+    <Compile Include="Models\DALCustomersOrdersModel.cs" />
     <Compile Include="Models\DALOrdersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -53,17 +53,39 @@ namespace SQLandMVCTest.Controllers
 
         public ActionResult CreateCustomer()
         {
+            List<OrderModel> orders = new List<OrderModel>();
+            foreach (var row in OrderProcessor.LoadOrders())
+            {
+                orders.Add(new OrderModel
+                {
+                    OrderID = row.OrderId,
+                    Date = row.Date
+                });
+            }
+
             ViewBag.Message = "Customer creation";
+            ViewBag.Orders = orders;
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCustomer(CustomerModel model)
+        public ActionResult CreateCustomer(CustomerModel model, int[] selectedOrders)
         {
             if(ModelState.IsValid)
             {
+                if (selectedOrders != null)
+                {
+                    foreach (var order in OrderProcessor.LoadOrders().Where(ord => selectedOrders.Contains(ord.Id)))
+                    {
+                        model.Orders.Add(new OrderModel
+                        {
+                            OrderID = order.OrderId,
+                            Date = order.Date
+                        });
+                    }
+                }
                 int recordsCreated = CustomerProcessor.CreateCustomer
                     (
                         model.CustomerID, 
@@ -71,9 +93,78 @@ namespace SQLandMVCTest.Controllers
                         model.PhoneNumber, 
                         model.Email
                     );
+
+                foreach (var item in model.Orders)
+                {
+                    CustomersOrdersProcessor.CreateCustomersOrders
+                        (
+                            model.CustomerID,
+                            item.OrderID
+                        );
+                }
                 return RedirectToAction("ViewCustomers");
             }
             return View();
+        }
+
+        public ActionResult ViewCustomersDetails(int id = 0)
+        {
+            //Получаем покупателя с идентификатором равным id
+            var data = CustomerProcessor.LoadCustomers().Where(c => c.CustomerId == id).FirstOrDefault();
+
+            if(data == null)
+            {
+                return RedirectToAction("ViewCustomers");
+            }
+
+            //Получаем из списка заказов все заказы данного покупателя
+            var dataOrdersCustomers = CustomersOrdersProcessor.LoadCustomersOrders().Where(co => co.CustomerId == data.CustomerId) as List<DALCustomersOrdersModel>;
+
+            //Теперь нужно найти по идентификаторам заказов сами заказы
+            //OrderId - уникальные
+            var DALorders = new List<DALOrdersModel>();
+            var orders = new List<OrderModel>();
+
+            CustomerModel customer;
+            if (dataOrdersCustomers != null)
+            {
+                foreach (var item in dataOrdersCustomers)
+                {
+                    DALorders.Add(OrderProcessor.LoadOrders().Where(oid => oid.OrderId == item.OrderId).FirstOrDefault());
+                }
+
+
+                foreach (var dalOrder in DALorders)
+                {
+                    orders.Add(new OrderModel
+                    {
+                        OrderID = dalOrder.OrderId,
+                        Date = dalOrder.Date
+                    });
+                }
+
+                customer = new CustomerModel
+                {
+                    CustomerID = data.CustomerId,
+                    Name = data.FullName,
+                    PhoneNumber = data.PhoneNumber,
+                    Email = data.EmailAddress,
+                    Orders = orders
+                };
+            }
+            else
+            {
+                customer = new CustomerModel
+                {
+                    CustomerID = data.CustomerId,
+                    Name = data.FullName,
+                    PhoneNumber = data.PhoneNumber,
+                    Email = data.EmailAddress,
+                };
+            }
+            
+            
+            return View(customer);
         }
     }
 }
