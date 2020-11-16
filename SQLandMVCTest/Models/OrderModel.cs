@@ -15,5 +15,12 @@ namespace SQLandMVCTest.Models
         [Required(ErrorMessage = "Date address should be provided")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
+
+        public virtual ICollection<CustomerModel> Customers { get; set; }
+
+        public OrderModel()
+        {
+            Customers = new List<CustomerModel>();
+        }
     }
 }

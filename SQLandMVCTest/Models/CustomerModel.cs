@@ -23,5 +23,12 @@ namespace SQLandMVCTest.Models
         [Required(ErrorMessage = "Email address should be provided")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public virtual ICollection<OrderModel> Orders { get; set; }
+
+        public CustomerModel()
+        {
+            Orders = new List<OrderModel>();
+        }
     }
 }
