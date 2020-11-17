@@ -73,7 +73,7 @@ namespace SQLandMVCTest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCustomer(CustomerModel model, int[] selectedOrders)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (selectedOrders != null)
                 {
@@ -88,20 +88,12 @@ namespace SQLandMVCTest.Controllers
                 }
                 int recordsCreated = CustomerProcessor.CreateCustomer
                     (
-                        model.CustomerID, 
-                        model.Name, 
-                        model.PhoneNumber, 
+                        model.CustomerID,
+                        model.Name,
+                        model.PhoneNumber,
                         model.Email
                     );
 
-                foreach (var item in model.Orders)
-                {
-                    CustomersOrdersProcessor.CreateCustomersOrders
-                        (
-                            model.CustomerID,
-                            item.OrderID
-                        );
-                }
                 return RedirectToAction("ViewCustomers");
             }
             return View();
@@ -112,13 +104,12 @@ namespace SQLandMVCTest.Controllers
             //Получаем покупателя с идентификатором равным id
             var data = CustomerProcessor.LoadCustomers().Where(c => c.CustomerId == id).FirstOrDefault();
 
-            if(data == null)
+            if (data == null)
             {
                 return RedirectToAction("ViewCustomers");
             }
 
             //Получаем из списка заказов все заказы данного покупателя
-            var dataOrdersCustomers = CustomersOrdersProcessor.LoadCustomersOrders().Where(co => co.CustomerId == data.CustomerId) as List<DALCustomersOrdersModel>;
 
             //Теперь нужно найти по идентификаторам заказов сами заказы
             //OrderId - уникальные
@@ -126,44 +117,17 @@ namespace SQLandMVCTest.Controllers
             var orders = new List<OrderModel>();
 
             CustomerModel customer;
-            if (dataOrdersCustomers != null)
+
+            customer = new CustomerModel
             {
-                foreach (var item in dataOrdersCustomers)
-                {
-                    DALorders.Add(OrderProcessor.LoadOrders().Where(oid => oid.OrderId == item.OrderId).FirstOrDefault());
-                }
+                CustomerID = data.CustomerId,
+                Name = data.FullName,
+                PhoneNumber = data.PhoneNumber,
+                Email = data.EmailAddress,
+                Orders = orders
+            };
 
 
-                foreach (var dalOrder in DALorders)
-                {
-                    orders.Add(new OrderModel
-                    {
-                        OrderID = dalOrder.OrderId,
-                        Date = dalOrder.Date
-                    });
-                }
-
-                customer = new CustomerModel
-                {
-                    CustomerID = data.CustomerId,
-                    Name = data.FullName,
-                    PhoneNumber = data.PhoneNumber,
-                    Email = data.EmailAddress,
-                    Orders = orders
-                };
-            }
-            else
-            {
-                customer = new CustomerModel
-                {
-                    CustomerID = data.CustomerId,
-                    Name = data.FullName,
-                    PhoneNumber = data.PhoneNumber,
-                    Email = data.EmailAddress,
-                };
-            }
-            
-            
             return View(customer);
         }
     }
