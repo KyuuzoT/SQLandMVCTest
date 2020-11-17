@@ -64,7 +64,6 @@
   <ItemGroup>
     <Build Include="dbo\Tables\CustomersTable.sql" />
     <Build Include="dbo\Tables\OrdersTable.sql" />
-    <Build Include="dbo\Tables\CustomersOrdersTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Profiles\MVCDataBase.publish.xml" />
