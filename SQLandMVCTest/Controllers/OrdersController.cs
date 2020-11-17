@@ -18,7 +18,18 @@ namespace SQLandMVCTest.Controllers
         public ActionResult CreateOrder()
         {
             ViewBag.Message = "Order creation";
-
+            List<CustomerModel> customers = new List<CustomerModel>();
+            foreach (var row in CustomerProcessor.LoadCustomers())
+            {
+                customers.Add(new CustomerModel
+                {
+                    CustomerID = row.CustomerId,
+                    Name = row.FullName,
+                    PhoneNumber = row.PhoneNumber,
+                    Email = row.EmailAddress
+                });
+            }
+            ViewBag.CustomersList = customers;
             return View();
         }
 
