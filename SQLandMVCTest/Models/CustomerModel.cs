@@ -24,6 +24,14 @@ namespace SQLandMVCTest.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        public string Information
+        {
+            get
+            {
+                return $"ID: {CustomerID} | Name: {Name} | Phone: {PhoneNumber}";
+            }
+        }
+
         public virtual ICollection<OrderModel> Orders { get; set; }
 
         public CustomerModel()
